@@ -18,6 +18,39 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
+  services.upower.enable = true;
+  powerManagement.enable = true;
+
+  programs.tmux = {
+    enable = true;
+    
+    # Basic settings
+    extraConfig = ''
+      # Terminal and mouse settings
+      set -g default-terminal "tmux-256color"
+      set -g mouse on
+      unbind C-b
+      set -g prefix C-s
+      bind s send-prefix
+
+      # Catppuccin plugin configuration
+      set -g @catppuccin_flavour "mocha"
+      set -g @catppuccin_window_status_style "rounded"
+      set -g @plugin 'tmux-plugins/tmux-cpu'
+
+
+      # Status bar configuration
+      set -g status-position top
+      set -g status-right-length 100
+      set -g status-left-length 100
+      set -g status-left ""
+      set -g status-right "#{E:@catppuccin_status_application}"
+      set -ag status-right "#{E:@catppuccin_status_session}"
+      set -ag status-right "#{E:@catppuccin_status_uptime}"
+      run-shell ${pkgs.tmuxPlugins.catppuccin.rtp}
+    '';
+  };
+
   programs.starship = {
     enable = true;
     # Optional: Custom settings (default: ~/.config/starship.toml)
@@ -153,12 +186,17 @@ programs.fish = {
     xdg-desktop-portal-gtk	
     gcc
     fd
-    tmux
     zig
     rustup
     go
     nodejs_24
     starship
+    tmux
+    tmuxPlugins.catppuccin
+    tmuxPlugins.cpu
+    tmuxPlugins.battery
+    acpi    # For battery information
+    lm_sensors
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
