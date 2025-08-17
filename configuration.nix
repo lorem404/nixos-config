@@ -18,6 +18,32 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
+  programs.fish = {
+    enable = true;
+    shellInit = "";
+    shellAliases = {
+      ls = "lsd -thral";
+      v = "nvim";
+      c = "clear";
+    };
+    
+  };
+
+  fonts = {
+    packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "FiraCode" ]; }) # Installs FiraCode Nerd Font
+      # Other fonts can be added here (e.g., "Hack", "JetBrainsMono")
+    ];
+
+    # Optional: Set default fonts for system
+    fontconfig = {
+      defaultFonts = {
+        monospace = [ "FiraCode Nerd Font Mono" ]; # Terminal/editor font
+        sansSerif = [ "DejaVu Sans" ];            # GUI apps font
+      };
+    };
+  };
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -78,6 +104,7 @@
     #  thunderbird
     ];
   };
+  
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -107,6 +134,12 @@
     waybar
     wofi
     xdg-desktop-portal-gtk	
+    gcc
+    fd
+    tmux
+    zig
+    rustup
+    node
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
