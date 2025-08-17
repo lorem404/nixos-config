@@ -18,16 +18,16 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
-  programs.fish = {
-    enable = true;
-    shellInit = "";
-    shellAliases = {
-      ls = "lsd -thral";
-      v = "nvim";
-      c = "clear";
-    };
-    
+
+programs.fish = {
+  enable = true;
+  shellInit = "";
+  shellAliases = {
+    ls = "lsd -thral";
+    v = "nvim";
+    c = "clear";
   };
+};
 
 
   fonts.packages = with pkgs; [
@@ -36,6 +36,7 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.hack
     nerd-fonts.roboto-mono
+    font-awesome
     
     # Other regular fonts
     dejavu_fonts
@@ -44,7 +45,7 @@
 
   fonts.fontconfig.defaultFonts = {
     monospace = [ "FiraCode Nerd Font Mono" ];
-    sansSerif = [ "DejaVu Sans" ];
+    sansSerif = [ "Font Awesome 6 Free" ];
   };
 
 
@@ -102,6 +103,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.lorem = {
     isNormalUser = true;
+    shell = pkgs.fish;
     description = "lorem";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
