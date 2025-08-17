@@ -18,10 +18,21 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
+  programs.starship = {
+    enable = true;
+    # Optional: Custom settings (default: ~/.config/starship.toml)
+    settings = {
+      add_newline = true;
+      format = "$directory$git_branch$git_status$cmd_duration$line_break$character";
+    };
+  };
+
 
 programs.fish = {
   enable = true;
-  shellInit = "";
+  shellInit = ''
+  starship init fish | source
+  '';
   shellAliases = {
     ls = "lsd -thral";
     v = "nvim";
@@ -145,7 +156,9 @@ programs.fish = {
     tmux
     zig
     rustup
+    go
     nodejs_24
+    starship
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
