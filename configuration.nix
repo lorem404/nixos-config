@@ -29,20 +29,24 @@
     
   };
 
-  fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" ]; }) # Installs FiraCode Nerd Font
-      # Other fonts can be added here (e.g., "Hack", "JetBrainsMono")
-    ];
 
-    # Optional: Set default fonts for system
-    fontconfig = {
-      defaultFonts = {
-        monospace = [ "FiraCode Nerd Font Mono" ]; # Terminal/editor font
-        sansSerif = [ "DejaVu Sans" ];            # GUI apps font
-      };
-    };
+  fonts.packages = with pkgs; [
+    # Individual Nerd Font packages (new style)
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.hack
+    nerd-fonts.roboto-mono
+    
+    # Other regular fonts
+    dejavu_fonts
+    noto-fonts
+  ];
+
+  fonts.fontconfig.defaultFonts = {
+    monospace = [ "FiraCode Nerd Font Mono" ];
+    sansSerif = [ "DejaVu Sans" ];
   };
+
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -139,7 +143,7 @@
     tmux
     zig
     rustup
-    node
+    nodejs_24
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
