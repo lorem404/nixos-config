@@ -5,13 +5,12 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
-  boot.supportedFilesystems = [ "ntfs"  ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
+  boot.supportedFilesystems = [ "ntfs" ];
   # Bootloader.
- # boot.loader.systemd-boot.enable = true;
+  # boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
@@ -21,6 +20,7 @@
   services.upower.enable = true;
   powerManagement.enable = true;
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.etc."xdg/kitty/kitty.conf".text = ''
     font_family      FiraCode Nerd Font
@@ -38,7 +38,7 @@
 
   programs.tmux = {
     enable = true;
-    
+
     # Basic settings
     extraConfig = ''
       # Terminal and mouse settings
@@ -71,23 +71,22 @@
     # Optional: Custom settings (default: ~/.config/starship.toml)
     settings = {
       add_newline = true;
-      format = "$directory$git_branch$git_status$cmd_duration$line_break$character";
+      format =
+        "$directory$git_branch$git_status$cmd_duration$line_break$character";
     };
   };
 
-
-programs.fish = {
-  enable = true;
-  shellInit = ''
-  starship init fish | source
-  '';
-  shellAliases = {
-    ls = "lsd -thral";
-    v = "nvim";
-    c = "clear";
+  programs.fish = {
+    enable = true;
+    shellInit = ''
+      starship init fish | source
+    '';
+    shellAliases = {
+      ls = "lsd -thral";
+      v = "nvim";
+      c = "clear";
+    };
   };
-};
-
 
   fonts.packages = with pkgs; [
     # Individual Nerd Font packages (new style)
@@ -96,7 +95,7 @@ programs.fish = {
     nerd-fonts.hack
     nerd-fonts.roboto-mono
     font-awesome
-    
+
     # Other regular fonts
     dejavu_fonts
     noto-fonts
@@ -106,7 +105,6 @@ programs.fish = {
     monospace = [ "FiraCode Nerd Font Mono" ];
     sansSerif = [ "Font Awesome 6 Free" ];
   };
-
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -165,11 +163,11 @@ programs.fish = {
     shell = pkgs.fish;
     description = "lorem";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    packages = with pkgs;
+      [
+        #  thunderbird
+      ];
   };
-  
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -180,7 +178,7 @@ programs.fish = {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     fish
     neovim
@@ -198,7 +196,7 @@ programs.fish = {
     kitty
     waybar
     wofi
-    xdg-desktop-portal-gtk	
+    xdg-desktop-portal-gtk
     gcc
     fd
     zig
@@ -210,8 +208,10 @@ programs.fish = {
     tmuxPlugins.catppuccin
     tmuxPlugins.cpu
     tmuxPlugins.battery
-    acpi    # For battery information
+    acpi # For battery information
     lm_sensors
+    htop
+    btop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
