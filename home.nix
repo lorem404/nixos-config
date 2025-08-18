@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+
   home.username = "lorem";
   home.homeDirectory = "/home/lorem";
 
@@ -40,6 +41,25 @@
       set -ag status-right "#{E:@catppuccin_status_uptime}"
       run-shell ${pkgs.tmuxPlugins.catppuccin.rtp}
     '';
+  };
+
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = true;
+      format =
+        "$directory$git_branch$git_status$cmd_duration$line_break$character";
+    };
+  };
+
+  programs.git = {
+    enable = true;
+    userName = "lorem";
+    userEmail = "lorem8023@gmail.com";
+
+    aliases = { lg = "log --color --graph "; };
+
+    extraConfig = { core.editor = "nvim"; };
   };
 
   programs.kitty = {
