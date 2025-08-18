@@ -21,6 +21,21 @@
   services.upower.enable = true;
   powerManagement.enable = true;
 
+
+  environment.etc."xdg/kitty/kitty.conf".text = ''
+    font_family      FiraCode Nerd Font
+    bold_font        auto
+    italic_font      auto
+    bold_italic_font auto
+    font_size        11.5
+    cursor_trail     100
+    background #1e1e2e  
+    foreground #cdd6f4
+    hide_window_decorations yes
+    background_opacity 1
+    shell ${pkgs.fish}/bin/fish
+  '';
+
   programs.tmux = {
     enable = true;
     
