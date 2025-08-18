@@ -27,7 +27,7 @@
   home-manager = {
     # also pass inputs to home-manager modules
     extraSpecialArgs = { inherit inputs; };
-    users = { "username" = import ./home.nix; };
+    users = { "lorem" = import ./home.nix; };
   };
 
   environment.etc."xdg/kitty/kitty.conf".text = ''
