@@ -2,11 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+
+    inputs.home-manager.nixosModules.default
   ];
   boot.supportedFilesystems = [ "ntfs" ];
   # Bootloader.
@@ -21,6 +23,12 @@
   powerManagement.enable = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  home-manager = {
+    # also pass inputs to home-manager modules
+    extraSpecialArgs = { inherit inputs; };
+    users = { "username" = import ./home.nix; };
+  };
 
   environment.etc."xdg/kitty/kitty.conf".text = ''
     font_family      FiraCode Nerd Font
