@@ -6,6 +6,201 @@
   home.homeDirectory = "/home/lorem";
   home.stateVersion = "25.05"; # Please read the comment before changing.
 
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+
+    # GNOME-style CSS
+    style = ''
+      * {
+        border: none;
+        border-radius: 0;
+        font-family: "Cantarell", "Font Awesome 6 Free";
+        font-size: 13px;
+        font-weight: 500;
+        min-height: 0;
+      }
+
+      window#waybar {
+        background: rgba(46, 52, 64, 0.95);
+        color: #eceff4;
+        border-bottom: 1px solid rgba(76, 86, 106, 0.5);
+        padding: 0;
+      }
+
+      /* Workspaces like GNOME */
+      #workspaces {
+        padding: 0 4px;
+      }
+
+      #workspaces button {
+        padding: 0 8px;
+        color: #d8dee9;
+        background: transparent;
+        margin: 2px 1px;
+        border-radius: 6px;
+      }
+
+      #workspaces button.active {
+        background: rgba(94, 129, 172, 0.3);
+        color: #88c0d0;
+      }
+
+      #workspaces button:hover {
+        background: rgba(94, 129, 172, 0.2);
+      }
+
+      /* Modules */
+      #clock, #pulseaudio, #network, #cpu, #memory, #battery, #tray {
+        padding: 0 12px;
+        margin: 2px 0;
+        color: #eceff4;
+      }
+
+      #clock {
+        font-weight: 600;
+      }
+
+      #pulseaudio.muted {
+        color: #bf616a;
+      }
+
+      #battery.charging {
+        color: #a3be8c;
+      }
+
+      #battery.warning:not(.charging) {
+        color: #ebcb8b;
+      }
+
+      #battery.critical:not(.charging) {
+        color: #bf616a;
+        animation: blink 1s linear infinite;
+      }
+
+      @keyframes blink {
+        50% { opacity: 0.3; }
+      }
+
+      #tray {
+        padding: 0 8px;
+      }
+
+      #tray > .passive {
+        -gtk-icon-effect: dim;
+      }
+
+      #tray > .needs-attention {
+        -gtk-icon-effect: highlight;
+      }
+    '';
+
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 32;
+        margin-top = 0;
+        margin-left = 0;
+        margin-right = 0;
+
+        # GNOME-style layout (centered window title, right-side indicators)
+        modules-left = [ "sway/workspaces" ];
+        modules-center = [ "sway/window" ];
+        modules-right =
+          [ "pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray" ];
+
+        # Workspaces like GNOME activities
+        "workspaces" = {
+          format = "{name}";
+          format-icons = {
+            "1" = "";
+            "2" = "";
+            "3" = "";
+            "4" = "";
+            "5" = "";
+            urgent = "";
+            default = "";
+          };
+          disable-scroll = true;
+          all-outputs = true;
+        };
+
+        # Window title (like GNOME)
+        "sway/window" = {
+          format = "{}";
+          max-length = 60;
+          tooltip = false;
+        };
+
+        # Clock (GNOME style)
+        "clock" = {
+          format = "{:%H:%M}";
+          format-alt = "{:%A, %B %d}";
+          tooltip-format = "{:%Y-%m-%d | %H:%M:%S}";
+        };
+
+        # Audio (GNOME style)
+        "pulseaudio" = {
+          format = "{volume}% {icon}";
+          format-bluetooth = "{volume}% {icon}";
+          format-muted = "󰖁";
+          format-icons = {
+            headphone = "󰋋";
+            hands-free = "󰋎";
+            headset = "󰋎";
+            phone = "";
+            portable = "";
+            car = "";
+            default = [ "" "" "" ];
+          };
+          on-click = "pavucontrol";
+        };
+
+        # Network (GNOME style)
+        "network" = {
+          format-wifi = "{essid} ({signalStrength}%) 󰖩";
+          format-ethernet = " {ifname}";
+          format-linked = " {ifname} (No IP)";
+          format-disconnected = "󰖪 Disconnected";
+          format-alt = "{ipaddr}/{cidr}";
+          on-click = "nm-connection-editor";
+        };
+
+        # CPU
+        "cpu" = {
+          format = "󰻠 {usage}%";
+          interval = 2;
+        };
+
+        # Memory
+        "memory" = {
+          format = "󰍛 {}%";
+          interval = 2;
+        };
+
+        # Battery (GNOME style)
+        "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{capacity}% {icon}";
+          format-charging = "{capacity}% 󰂄";
+          format-plugged = "{capacity}% 󰚥";
+          format-alt = "{time} {icon}";
+          format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+        };
+
+        # System tray (GNOME style)
+        "tray" = {
+          icon-size = 16;
+          spacing = 8;
+        };
+      };
+    };
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
 
@@ -15,6 +210,7 @@
 
       # Exec-once
       # exec-once = [ ];
+      exec-once = "waybar &";
 
       # Input configuration
       input = {
@@ -81,50 +277,57 @@
       # windowrulev2 = "suppressevent maximize, class:.*";
 
       # Key bindings (exactly as in default config)
-      "$mainMod" = "SUPER";
+      "$mod" = "SUPER";
 
       bind = [
-        "$mainMod, Q, exec, kitty"
-        "$mainMod, C, killactive"
-        "$mainMod, M, exit"
-        "$mainMod, E, exec, dolphin"
-        "$mainMod, V, togglefloating"
-        "$mainMod, R, exec, wofi --show drun"
-        "$mainMod, P, pseudo"
-        "$mainMod, J, togglesplit"
-        "$mainMod, left, movefocus, l"
-        "$mainMod, right, movefocus, r"
-        "$mainMod, up, movefocus, u"
-        "$mainMod, down, movefocus, d"
-        "$mainMod, 1, workspace, 1"
-        "$mainMod, 2, workspace, 2"
-        "$mainMod, 3, workspace, 3"
-        "$mainMod, 4, workspace, 4"
-        "$mainMod, 5, workspace, 5"
-        "$mainMod, 6, workspace, 6"
-        "$mainMod, 7, workspace, 7"
-        "$mainMod, 8, workspace, 8"
-        "$mainMod, 9, workspace, 9"
-        "$mainMod, 0, workspace, 10"
-        "$mainMod SHIFT, 1, movetoworkspace, 1"
-        "$mainMod SHIFT, 2, movetoworkspace, 2"
-        "$mainMod SHIFT, 3, movetoworkspace, 3"
-        "$mainMod SHIFT, 4, movetoworkspace, 4"
-        "$mainMod SHIFT, 5, movetoworkspace, 5"
-        "$mainMod SHIFT, 6, movetoworkspace, 6"
-        "$mainMod SHIFT, 7, movetoworkspace, 7"
-        "$mainMod SHIFT, 8, movetoworkspace, 8"
-        "$mainMod SHIFT, 9, movetoworkspace, 9"
-        "$mainMod SHIFT, 0, movetoworkspace, 10"
-        "$mainMod, mouse_down, workspace, e+1"
-        "$mainMod, mouse_up, workspace, e-1"
-        ''$mainMod, S, exec, grim -g "$(slurp)" - | wl-copy''
+
+        # Power actions
+        "$mod SHIFT ,P, exec, systemctl poweroff"
+        "$mod SHIFT ,R, exec, systemctl reboot"
+        "$mod SHIFT ,S, exec, systemctl suspend"
+
+        # Battery saver mode
+        "$mod SHIFT ,B, exec, powerprofilesctl set power-saver"
+        "$mod SHIFT, N, exec, powerprofilesctl set balanced"
+        "$mod SHIFT ,M, exec, powerprofilesctl set performance"
+        "$mod, Q, exec, kitty"
+        "$mod, C, killactive"
+        "$mod, M, exit"
+        "$mod, E, exec, dolphin"
+        "$mod, V, togglefloating"
+        "$mod, R, exec, wofi --show drun"
+        "$mod, P, pseudo"
+        "$mod, J, togglesplit"
+        "$mod, left, movefocus, l"
+        "$mod, right, movefocus, r"
+        "$mod, up, movefocus, u"
+        "$mod, down, movefocus, d"
+        "$mod, 1, workspace, 1"
+        "$mod, 2, workspace, 2"
+        "$mod, 3, workspace, 3"
+        "$mod, 4, workspace, 4"
+        "$mod, 5, workspace, 5"
+        "$mod, 6, workspace, 6"
+        "$mod, 7, workspace, 7"
+        "$mod, 8, workspace, 8"
+        "$mod, 9, workspace, 9"
+        "$mod, 0, workspace, 10"
+        "$mod SHIFT, 1, movetoworkspace, 1"
+        "$mod SHIFT, 2, movetoworkspace, 2"
+        "$mod SHIFT, 3, movetoworkspace, 3"
+        "$mod SHIFT, 4, movetoworkspace, 4"
+        "$mod SHIFT, 5, movetoworkspace, 5"
+        "$mod SHIFT, 6, movetoworkspace, 6"
+        "$mod SHIFT, 7, movetoworkspace, 7"
+        "$mod SHIFT, 8, movetoworkspace, 8"
+        "$mod SHIFT, 9, movetoworkspace, 9"
+        "$mod SHIFT, 0, movetoworkspace, 10"
+        "$mod, mouse_down, workspace, e+1"
+        "$mod, mouse_up, workspace, e-1"
+        ''$mod, S, exec, grim -g "$(slurp)" - | wl-copy''
       ];
 
-      bindm = [
-        "$mainMod, mouse:272, movewindow"
-        "$mainMod, mouse:273, resizewindow"
-      ];
+      bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
     };
 
     # Extra config (environment variables and misc)
