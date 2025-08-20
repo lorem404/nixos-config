@@ -170,6 +170,8 @@
     lm_sensors
     htop
     btop
+    pavucontrol # audio control
+    networkmanagerapplet
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

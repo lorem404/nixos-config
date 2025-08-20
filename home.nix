@@ -135,7 +135,7 @@
 
         # Clock (GNOME style)
         "clock" = {
-          format = "{:%H:%M}";
+          format = "{:%H-:%M}";
           format-alt = "{:%A, %B %d}";
           tooltip-format = "{:%Y-%m-%d | %H:%M:%S}";
         };
@@ -210,7 +210,6 @@
 
       # Exec-once
       # exec-once = [ ];
-      exec-once = "waybar &";
 
       # Input configuration
       input = {
@@ -280,6 +279,11 @@
       "$mod" = "SUPER";
 
       bind = [
+        # 🎛️ Advanced Controls (with notifications)
+        "$mod, F3, exec, pamixer -i 10"
+        "$mod, F2, exec, pamixer -d 10"
+        "$mod, F5, exec, brightnessctl set +10%"
+        "$mod, F4, exec, brightnessctl set 10%-"
 
         # Power actions
         "$mod SHIFT ,P, exec, systemctl poweroff"
@@ -290,6 +294,7 @@
         "$mod SHIFT ,B, exec, powerprofilesctl set power-saver"
         "$mod SHIFT, N, exec, powerprofilesctl set balanced"
         "$mod SHIFT ,M, exec, powerprofilesctl set performance"
+        "$mod ,B, exec, firefox"
         "$mod, Q, exec, kitty"
         "$mod, C, killactive"
         "$mod, M, exit"
@@ -439,7 +444,7 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [ ];
+  home.packages = with pkgs; [ pamixer brightnessctl pulseaudio ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
