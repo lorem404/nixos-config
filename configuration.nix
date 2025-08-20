@@ -19,6 +19,37 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
+  virtualisation = {
+    # DOCKER - for existing tools and compatibility
+    docker = {
+      enable = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
+      enableOnBoot = true;
+      daemon.settings = {
+        "hosts" = [ "unix:///var/run/docker.sock" ];
+        "iptables" = true;
+      };
+    };
+
+    # PODMAN - for learning and rootless containers
+    podman = {
+      enable = true;
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+      };
+      # Don't create docker alias - keep them separate
+      dockerCompat = false;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+
+    # Shared container runtime
+    containerd.enable = true;
+  };
+
   services.upower.enable = true;
   powerManagement.enable = true;
 
@@ -43,6 +74,8 @@
       ls = "lsd -thral";
       v = "nvim";
       c = "clear";
+      fbat = "fzf -m --preview='bat --color=always {}'";
+      fv = "nvim $(fzf -m --preview='bat --color=always {}')";
     };
   };
 
@@ -120,7 +153,7 @@
     isNormalUser = true;
     shell = pkgs.fish;
     description = "lorem";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "podman" ];
     packages = with pkgs;
       [
         #  thunderbird
@@ -172,6 +205,20 @@
     btop
     pavucontrol # audio control
     networkmanagerapplet
+    docker
+    docker-compose
+    docker-buildx
+
+    # Podman suite  
+    podman
+    podman-compose
+    buildah # Build images with Podman
+    skopeo # Work with container registries
+
+    # Utilities
+    dive # Explore container images
+    trivy # Security scanner
+    ctop
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

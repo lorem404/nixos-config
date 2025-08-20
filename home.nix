@@ -6,6 +6,23 @@
   home.homeDirectory = "/home/lorem";
   home.stateVersion = "25.05"; # Please read the comment before changing.
 
+  # In your home.nix instead
+  home.sessionVariables = {
+    # Force rootless mode through environment
+    PODMAN_USERNS = "auto";
+  };
+
+  programs.bash.shellAliases = {
+    # Clear distinction between docker and podman
+    dps = "docker ps";
+    pps = "podman ps";
+
+    # Podman learning shortcuts
+    plearn = "podman run --rm -it docker.io/library/alpine:latest";
+    pbuild = "buildah bud";
+    ppush = "skopeo copy";
+  };
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -105,8 +122,8 @@
         margin-right = 0;
 
         # GNOME-style layout (centered window title, right-side indicators)
-        modules-left = [ "sway/workspaces" ];
-        modules-center = [ "sway/window" ];
+        modules-left = [ "workspaces" ];
+        modules-center = [ "window" ];
         modules-right =
           [ "pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray" ];
 
@@ -127,7 +144,7 @@
         };
 
         # Window title (like GNOME)
-        "sway/window" = {
+        "window" = {
           format = "{}";
           max-length = 60;
           tooltip = false;
@@ -444,7 +461,15 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [ pamixer brightnessctl pulseaudio ];
+  home.packages = with pkgs; [
+    pamixer
+    brightnessctl
+    pulseaudio
+    podman-tui # Terminal UI for Podman
+
+    # Development tools
+    docker-credential-helpers
+  ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
