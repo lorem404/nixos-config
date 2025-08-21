@@ -20,7 +20,11 @@
   boot.loader.grub.useOSProber = true;
 
   programs.fish.enable = true;
-
+  programs.git.enable = true;
+  programs.tmux.enable = true;
+  programs.starship.enable = true;
+  programs.waybar.enable = true;
+  programs.kitty.enable = true;
   virtualisation = {
     # DOCKER - for existing tools and compatibility
     docker = {
