@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./fish.nix
+
+  ];
 
   home.username = "lorem";
   home.homeDirectory = "/home/lorem";
