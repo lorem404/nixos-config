@@ -19,6 +19,8 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
+  programs.fish.enable = true;
+
   virtualisation = {
     # DOCKER - for existing tools and compatibility
     docker = {

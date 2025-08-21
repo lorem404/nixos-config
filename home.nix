@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./fish.nix
+    ./modules/fish.nix
 
   ];
 
