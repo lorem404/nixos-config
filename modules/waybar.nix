@@ -23,11 +23,11 @@
       }
 
       /* Workspaces like GNOME */
-      #workspaces {
+      #hyprland-workspaces {
         padding: 0 4px;
       }
 
-      #workspaces button {
+      #hyprland-workspaces button {
         padding: 0 8px;
         color: #d8dee9;
         background: transparent;
@@ -35,12 +35,12 @@
         border-radius: 6px;
       }
 
-      #workspaces button.active {
+      #hyprland-workspaces button.active {
         background: rgba(94, 129, 172, 0.3);
         color: #88c0d0;
       }
 
-      #workspaces button:hover {
+      #hyprland-workspaces button:hover {
         background: rgba(94, 129, 172, 0.2);
       }
 
@@ -99,25 +99,41 @@
         margin-right = 0;
 
         # GNOME-style layout (centered window title, right-side indicators)
-        modules-left = [ "workspaces" ];
+        modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "window" ];
         modules-right =
           [ "pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray" ];
 
         # Workspaces like GNOME activities
-        "workspaces" = {
-          format = "{name}";
+        "hyprland/workspaces" = {
+          format = "{icon}";
           format-icons = {
-            "1" = "";
-            "2" = "";
-            "3" = "";
-            "4" = "";
-            "5" = "";
-            urgent = "";
-            default = "";
+            "1" = ""; # Desktop
+            "2" = ""; # Browser (Chrome/Firefox)
+            "3" = ""; # Code (VS Code/Neovim)
+            "4" = ""; # Chat (Discord/Slack)
+            "5" = ""; # Music (Spotify)
+            "6" = ""; # Video (MPV)
+            "7" = ""; # Email
+            "8" = ""; # Settings
+            "9" = ""; # Games
+            "10" = ""; # Terminal
+            urgent = ""; # Urgent workspace (alert)
+            default = ""; # Default icon
           };
-          disable-scroll = true;
-          all-outputs = true;
+
+          # Behavior settings
+          active-only = false; # Show only active workspaces
+          all-outputs = true; # Show workspaces from all monitors
+          disable-scroll = false; # Enable scroll to change workspaces
+          persistent_workspaces = { # Persistent workspaces per monitor
+            "*" = 5; # 5 workspaces on all monitors
+          };
+
+          # Click actions
+          on-click = "activate";
+          on-scroll-up = "hyprctl dispatch workspace e+1";
+          on-scroll-down = "hyprctl dispatch workspace e-1";
         };
 
         # Window title (like GNOME)
