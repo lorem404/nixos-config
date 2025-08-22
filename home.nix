@@ -41,7 +41,7 @@
     brightnessctl
     pulseaudio
     podman-tui # Terminal UI for Podman
-
+    nodejs_24
     # Development tools
     docker-credential-helpers
   ];

@@ -184,7 +184,7 @@
     zig
     rustup
     go
-    nodejs_24
+    python314
     starship
     tmux
     tmuxPlugins.catppuccin
