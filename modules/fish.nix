@@ -3,6 +3,10 @@
     enable = true;
     shellInit = ''
       starship init fish | source
+      set -gx GOPATH "$HOME/.local/share/go"
+      set -gx GOCACHE "$HOME/.cache/go/build"
+      set -gx GOMODCACHE "$HOME/.cache/go/mod"
+      set -gx PATH $PATH "$HOME/.local/share/go/bin"
     '';
     shellAliases = {
       ls = "lsd -thral";
