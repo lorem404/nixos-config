@@ -24,6 +24,9 @@
   programs.tmux.enable = true;
   programs.starship.enable = true;
   programs.waybar.enable = true;
+
+  environment.sessionVariables = { MANPAGER = "nvim +Man!"; };
+
   virtualisation = {
     # DOCKER - for existing tools and compatibility
     docker = {

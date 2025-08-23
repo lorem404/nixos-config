@@ -6,6 +6,10 @@
 
     aliases = { lg = "log --color --graph "; };
 
-    extraConfig = { core.editor = "nvim"; };
+    extraConfig = {
+      core.editor = "nvim";
+      init.defaultBranch = "main";
+      pull.rebase = true;
+    };
   };
 }
