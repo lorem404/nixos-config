@@ -207,7 +207,7 @@
     docker
     docker-compose
     docker-buildx
-
+    mysql84
     # Podman suite  
     podman
     podman-compose
