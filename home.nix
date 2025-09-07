@@ -38,6 +38,12 @@
   # environment.
   home.packages = with pkgs; [
     pamixer
+    cmake
+    gnumake
+    ninja
+    bear
+    clang-tools
+    lldb
     brightnessctl
     pulseaudio
     podman-tui # Terminal UI for Podman
