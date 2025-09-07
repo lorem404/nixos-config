@@ -193,8 +193,7 @@
     rustup
     go
     python314
-    (python3.withPackages
-      (ps: with ps; [ pip setuptools numpy requests cython stem requests ]))
+
     starship
     tmux
     tmuxPlugins.catppuccin

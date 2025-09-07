@@ -42,6 +42,8 @@
     pulseaudio
     podman-tui # Terminal UI for Podman
     nodejs_24
+    (python3.withPackages
+      (ps: with ps; [ pip setuptools numpy requests cython stem requests ]))
     # Development tools
     docker-credential-helpers
   ];
