@@ -199,6 +199,7 @@
         setuptools
         numpy
         requests
+        cython
         # other packages
       ]))
     starship
