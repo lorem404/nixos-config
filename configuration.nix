@@ -215,7 +215,8 @@
     podman-compose
     buildah # Build images with Podman
     skopeo # Work with container registries
-
+    tor
+    iptables
     # Utilities
     dive # Explore container images
     trivy # Security scanner
