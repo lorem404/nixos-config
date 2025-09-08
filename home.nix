@@ -41,6 +41,10 @@
     cmake
     gnumake
     ninja
+    rust-analyzer
+    rustc
+    cargo
+    rustfmt
     bear
     clang-tools
     lldb

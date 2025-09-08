@@ -190,10 +190,8 @@
     gcc
     fd
     zig
-    rustup
     go
     python314
-
     starship
     tmux
     tmuxPlugins.catppuccin
