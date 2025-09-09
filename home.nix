@@ -45,6 +45,7 @@
     rustc
     cargo
     rustfmt
+    clippy
     bear
     clang-tools
     lldb
