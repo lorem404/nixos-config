@@ -1,35 +1,34 @@
 { config, pkgs, lib, ... }:
 
 let
-  # Lua configuration for Neovim
   nvimConfig = ''
-    -- Set leader key
+    -- Set leader key (LazyVim uses space)
     vim.g.mapleader = " "
     vim.g.maplocalleader = " "
 
-    -- Basic settings
+    -- LazyVim-like options
     vim.opt.number = true
     vim.opt.relativenumber = true
-    vim.opt.tabstop = 4
-    vim.opt.shiftwidth = 4
-    vim.opt.expandtab = true
-    vim.opt.smartindent = true
-    vim.opt.cursorline = true
-    vim.opt.termguicolors = true
-    vim.opt.signcolumn = "yes"
+    vim.opt.mouse = "a"
+    vim.opt.showmode = false
     vim.opt.clipboard = "unnamedplus"
-    vim.opt.wrap = false
+    vim.opt.breakindent = true
+    vim.opt.undofile = true
+    vim.opt.ignorecase = true
+    vim.opt.smartcase = true
+    vim.opt.signcolumn = "yes"
+    vim.opt.updatetime = 250
+    vim.opt.timeoutlen = 300
+    vim.opt.splitright = true
+    vim.opt.splitbelow = true
+    vim.opt.list = true
+    vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+    vim.opt.inccommand = "split"
+    vim.opt.cursorline = true
+    vim.opt.scrolloff = 10
+    vim.opt.hlsearch = true
 
-    -- Key mappings
-    local keymap = vim.keymap.set
-    keymap('n', '<leader>e', vim.cmd.Ex, { desc = 'Open file explorer' })
-    keymap('n', '<C-d>', '<C-d>zz')
-    keymap('n', '<C-u>', '<C-u>zz')
-    keymap('n', 'n', 'nzzzv')
-    keymap('n', 'N', 'Nzzzv')
-    keymap('x', '<leader>p', '"_dP', { desc = 'Paste without overwriting register' })
-
-    -- Lazy.nvim setup
+    -- Lazy.nvim setup (like LazyVim)
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     if not vim.loop.fs_stat(lazypath) then
       vim.fn.system({
@@ -43,51 +42,92 @@ let
     end
     vim.opt.rtp:prepend(lazypath)
 
-    -- Plugin specifications
+    -- LazyVim-like plugin specification
     require("lazy").setup({
-      -- Colorscheme
+      -- Colorscheme (LazyVim uses tokyonight)
       {
-        "rebelot/kanagawa.nvim",
+        "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-          vim.cmd.colorscheme("kanagawa-wave")
+          require("tokyonight").setup({
+            style = "night",
+            transparent = false,
+            styles = {
+              comments = { italic = true },
+              keywords = { italic = true },
+            },
+          })
+          vim.cmd.colorscheme("tokyonight")
         end,
       },
 
-      -- Status line
+      -- LazyVim core plugins
+      {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        config = function()
+          require("which-key").setup()
+        end,
+      },
+
+      {
+        "lewis6991/gitsigns.nvim",
+        event = "BufReadPre",
+        config = function()
+          require("gitsigns").setup()
+        end,
+      },
+
       {
         "nvim-lualine/lualine.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
           require("lualine").setup({
-            options = { theme = "kanagawa" },
+            options = {
+              theme = "tokyonight",
+              component_separators = "|",
+              section_separators = "",
+            },
           })
         end,
       },
 
-      -- File explorer
+      -- File tree (LazyVim uses neo-tree)
       {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "nvim-tree/nvim-web-devicons",
+          "MunifTanjim/nui.nvim",
+        },
         keys = {
-          { "<leader>ft", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file tree" },
+          { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Explorer" },
         },
         config = function()
-          require("nvim-tree").setup()
+          require("neo-tree").setup({
+            filesystem = {
+              follow_current_file = true,
+              hijack_netrw_behavior = "open_current",
+            },
+          })
         end,
       },
 
-      -- Fuzzy finder
+      -- Telescope (fuzzy finder)
       {
         "nvim-telescope/telescope.nvim",
         branch = "0.1.x",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+          "nvim-telescope/telescope-fzf-native.nvim",
+        },
         keys = {
-          { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-          { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
-          { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
-          { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help tags" },
+          { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+          { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
+          { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+          { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
         },
         config = function()
           require("telescope").setup({
@@ -96,10 +136,39 @@ let
               layout_config = { height = 0.95 },
             },
           })
+          require("telescope").load_extension("fzf")
         end,
       },
 
-      -- LSP configuration
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+      },
+
+      -- Treesitter
+      {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        config = function()
+          require("nvim-treesitter.configs").setup({
+            ensure_installed = {
+              "bash", "c", "cpp", "css", "go", "html", "java", "javascript", 
+              "json", "lua", "markdown", "nix", "python", "rust", "toml", 
+              "typescript", "vim", "vimdoc", "yaml"
+            },
+            auto_install = true,
+            highlight = { enable = true },
+            indent = { enable = true },
+          })
+        end,
+      },
+
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+      },
+
+      -- LSP Configuration (LazyVim style)
       {
         "neovim/nvim-lspconfig",
         event = "BufReadPre",
@@ -107,35 +176,47 @@ let
           "williamboman/mason.nvim",
           "williamboman/mason-lspconfig.nvim",
           "hrsh7th/cmp-nvim-lsp",
+          "hrsh7th/cmp-buffer",
+          "hrsh7th/cmp-path",
+          "hrsh7th/cmp-cmdline",
+          "hrsh7th/nvim-cmp",
+          "L3MON4D3/LuaSnip",
+          "saadparwaiz1/cmp_luasnip",
         },
         config = function()
+          -- Mason setup
+          require("mason").setup()
+          require("mason-lspconfig").setup({
+            ensure_installed = { "lua_ls", "nixd", "tsserver", "pyright", "rust_analyzer" },
+          })
+
           local lspconfig = require("lspconfig")
           local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-          -- Setup language servers
-          local servers = { "nil_ls", "tsserver", "pyright", "rust_analyzer" }
+          -- Setup LSP servers
+          local servers = { "lua_ls", "nixd", "tsserver", "pyright", "rust_analyzer" }
           for _, server in ipairs(servers) do
             lspconfig[server].setup({
               capabilities = capabilities,
             })
           end
 
-          -- Keymaps for LSP
+          -- LSP keymaps (LazyVim style)
           vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
               local bufnr = args.buf
               local opts = { buffer = bufnr, remap = false }
 
-              keymap('n', 'gd', vim.lsp.buf.definition, opts)
-              keymap('n', 'K', vim.lsp.buf.hover, opts)
-              keymap('n', '<leader>vws', vim.lsp.buf.workspace_symbol, opts)
-              keymap('n', '<leader>vd', vim.diagnostic.open_float, opts)
-              keymap('n', '[d', vim.diagnostic.goto_next, opts)
-              keymap('n', ']d', vim.diagnostic.goto_prev, opts)
-              keymap('n', '<leader>vca', vim.lsp.buf.code_action, opts)
-              keymap('n', '<leader>vrr', vim.lsp.buf.references, opts)
-              keymap('n', '<leader>vrn', vim.lsp.buf.rename, opts)
-              keymap('i', '<C-h>', vim.lsp.buf.signature_help, opts)
+              vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+              vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+              vim.keymap.set('n', '<leader>vws', vim.lsp.buf.workspace_symbol, opts)
+              vim.keymap.set('n', '<leader>vd', vim.diagnostic.open_float, opts)
+              vim.keymap.set('n', '[d', vim.diagnostic.goto_next, opts)
+              vim.keymap.set('n', ']d', vim.diagnostic.goto_prev, opts)
+              vim.keymap.set('n', '<leader>vca', vim.lsp.buf.code_action, opts)
+              vim.keymap.set('n', '<leader>vrr', vim.lsp.buf.references, opts)
+              vim.keymap.set('n', '<leader>vrn', vim.lsp.buf.rename, opts)
+              vim.keymap.set('i', '<C-h>', vim.lsp.buf.signature_help, opts)
             end
           })
         end,
@@ -144,13 +225,6 @@ let
       -- Autocompletion
       {
         "hrsh7th/nvim-cmp",
-        dependencies = {
-          "hrsh7th/cmp-buffer",
-          "hrsh7th/cmp-path",
-          "hrsh7th/cmp-nvim-lsp",
-          "L3MON4D3/LuaSnip",
-          "saadparwaiz1/cmp_luasnip",
-        },
         config = function()
           local cmp = require("cmp")
           cmp.setup({
@@ -177,29 +251,32 @@ let
         end,
       },
 
-      -- Treesitter (syntax highlighting)
+      -- UI enhancements
       {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
+        "lukas-reineke/indent-blankline.nvim",
         config = function()
-          require("nvim-treesitter.configs").setup({
-            ensure_installed = { "lua", "vim", "vimdoc", "nix", "javascript", "typescript", "python", "rust" },
-            sync_install = false,
-            auto_install = true,
-            highlight = {
-              enable = true,
-              additional_vim_regex_highlighting = false,
-            },
-          })
+          require("ibl").setup()
         end,
       },
 
-      -- Git integration
       {
-        "lewis6991/gitsigns.nvim",
+        "numToStr/Comment.nvim",
         config = function()
-          require("gitsigns").setup()
+          require("Comment").setup()
         end,
+      },
+
+      {
+        "kylechui/nvim-surround",
+        config = function()
+          require("nvim-surround").setup()
+        end,
+      },
+
+      -- Git
+      {
+        "tpope/vim-fugitive",
+        cmd = { "Git", "Gstatus", "Gblame" },
       },
 
       -- Nix support
@@ -208,6 +285,33 @@ let
         ft = "nix",
       },
     })
+
+    -- LazyVim-like keymaps
+    local keymap = vim.keymap.set
+
+    -- Better navigation
+    keymap("n", "<C-d>", "<C-d>zz")
+    keymap("n", "<C-u>", "<C-u>zz")
+    keymap("n", "n", "nzzzv")
+    keymap("n", "N", "Nzzzv")
+
+    -- Quality of life
+    keymap("x", "<leader>p", [["_dP]])
+    keymap({ "n", "v" }, "<leader>y", [["+y]])
+    keymap("n", "<leader>Y", [["+Y]])
+    keymap({ "n", "v" }, "<leader>d", [["_d]])
+
+    -- Window management
+    keymap("n", "<C-h>", "<C-w>h")
+    keymap("n", "<C-j>", "<C-w>j")
+    keymap("n", "<C-k>", "<C-w>k")
+    keymap("n", "<C-l>", "<C-w>l")
+
+    -- Resize with arrows
+    keymap("n", "<C-Up>", ":resize -2<CR>")
+    keymap("n", "<C-Down>", ":resize +2<CR>")
+    keymap("n", "<C-Left>", ":vertical resize -2<CR>")
+    keymap("n", "<C-Right>", ":vertical resize +2<CR>")
   '';
 in
 {
@@ -217,19 +321,31 @@ in
     viAlias = true;
     vimAlias = true;
     
-    # Use Lua configuration
     extraLuaConfig = nvimConfig;
 
-    # Plugins available in the environment
     plugins = with pkgs.vimPlugins; [
-      # Lazy.nvim will handle plugin installation, but we need to make them available
+      # Core LazyVim-like plugins
       lazy-nvim
-      kanagawa-nvim
+      tokyonight-nvim
+      which-key-nvim
+      gitsigns-nvim
       nvim-web-devicons
       lualine-nvim
-      nvim-tree-lua
-      telescope-nvim
+      
+      # File tree
+      neo-tree-nvim
       plenary-nvim
+      nui-nvim
+      
+      # Telescope
+      telescope-nvim
+      telescope-fzf-native-nvim
+      
+      # Treesitter
+      nvim-treesitter
+      nvim-treesitter-textobjects
+      
+      # LSP & Completion
       nvim-lspconfig
       mason-nvim
       mason-lspconfig-nvim
@@ -237,32 +353,44 @@ in
       cmp-nvim-lsp
       cmp-buffer
       cmp-path
+      cmp-cmdline
       luasnip
-      nvim-treesitter
-      gitsigns-nvim
+      cmp_luasnip
+      
+      # UI & Utilities
+      indent-blankline-nvim
+      comment-nvim
+      nvim-surround
+      vim-fugitive
       vim-nix
     ];
 
-    # Extra packages needed for Neovim functionality
     extraPackages = with pkgs; [
       # LSP servers
       nil
-      typescript-language-server
-      vscode-langservers-extracted
+      lua-language-server
+      nodePackages.typescript-language-server
+      nodePackages.vscode-langservers-extracted
       pyright
       rust-analyzer
       
-      # Formatters
+      # Formatters & tools
       nixpkgs-fmt
       nodePackages.prettier
       rustfmt
       black
+      stylua
       
-      # Tools
+      # Telescope dependencies
       ripgrep
       fd
       fzf
+      
+      # Treesitter
       tree-sitter
+      gcc
+      nodejs
+      python3
       git
     ];
   };
