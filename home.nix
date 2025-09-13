@@ -9,6 +9,7 @@
     ./modules/waybar.nix
     ./modules/tmux.nix
     ./modules/kitty.nix
+    ./modules/nvim.nix
   ];
 
   home.username = "lorem";
