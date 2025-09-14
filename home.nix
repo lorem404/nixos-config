@@ -57,6 +57,11 @@
       (ps: with ps; [ pip setuptools numpy requests cython stem requests ]))
     # Development tools
     docker-credential-helpers
+    lua-language-server
+    typescript-language-server
+    vscode-langservers-extracted
+    nil 
+    pyright
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
