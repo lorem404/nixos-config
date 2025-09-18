@@ -9,6 +9,7 @@
     ./modules/waybar.nix
     ./modules/tmux.nix
     ./modules/kitty.nix
+    ./modules/nushell.nix
   ];
 
   home.username = "lorem";
@@ -53,22 +54,34 @@
     pulseaudio
     podman-tui # Terminal UI for Podman
     nodejs_24
-    (python3.withPackages
-      (ps: with ps; [ pip setuptools numpy requests cython stem requests ]))
+    (python3.withPackages (
+      ps: with ps; [
+        pip
+        setuptools
+        numpy
+        requests
+        cython
+        stem
+        requests
+      ]
+    ))
     # Development tools
     docker-credential-helpers
     lua-language-server
     typescript-language-server
     vscode-langservers-extracted
-    nil 
+    nil
     pyright
+    nushell
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = { };
 
-  home.sessionVariables = { EDITOR = "nvim"; };
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

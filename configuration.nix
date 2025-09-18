@@ -2,10 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
 
     inputs.home-manager.nixosModules.default
@@ -25,7 +31,9 @@
   programs.starship.enable = true;
   programs.waybar.enable = true;
 
-  environment.sessionVariables = { MANPAGER = "nvim +Man!"; };
+  environment.sessionVariables = {
+    MANPAGER = "nvim +Man!";
+  };
 
   virtualisation = {
     # DOCKER - for existing tools and compatibility
@@ -61,16 +69,20 @@
   services.upower.enable = true;
   powerManagement.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   programs.hyprland.enable = true;
-  programs.hyprland.package =
-    inputs.hyprland.packages."${pkgs.system}".hyprland;
+  programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
 
   home-manager = {
     # also pass inputs to home-manager modules
     extraSpecialArgs = { inherit inputs; };
-    users = { "lorem" = import ./home.nix; };
+    users = {
+      "lorem" = import ./home.nix;
+    };
   };
 
   fonts.packages = with pkgs; [
@@ -145,13 +157,17 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.lorem = {
     isNormalUser = true;
-    shell = pkgs.fish;
+    shell = pkgs.nushell;
     description = "lorem";
-    extraGroups = [ "networkmanager" "wheel" "docker" "podman" ];
-    packages = with pkgs;
-      [
-        #  thunderbird
-      ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "podman"
+    ];
+    packages = with pkgs; [
+      #  thunderbird
+    ];
   };
 
   # Install firefox.
@@ -207,7 +223,7 @@
     docker-compose
     docker-buildx
     mysql84
-    # Podman suite  
+    # Podman suite
     podman
     podman-compose
     buildah # Build images with Podman
