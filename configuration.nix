@@ -35,6 +35,15 @@
     MANPAGER = "nvim +Man!";
   };
 
+  # Add to /etc/nixos/configuration.nix
+  boot.extraModprobeConfig = ''
+    options btusb reset=1
+  '';
+
+  # Or try
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
   virtualisation = {
     # DOCKER - for existing tools and compatibility
     docker = {
