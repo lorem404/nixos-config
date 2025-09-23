@@ -157,7 +157,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.lorem = {
     isNormalUser = true;
-    shell = pkgs.nushell;
+    shell = pkgs.fish;
     description = "lorem";
     extraGroups = [
       "networkmanager"
