@@ -10,6 +10,7 @@
     ./modules/tmux.nix
     ./modules/kitty.nix
     ./modules/nushell.nix
+    ./modules/helix.nix
   ];
 
   home.username = "lorem";
@@ -80,7 +81,7 @@
   home.file = { };
 
   home.sessionVariables = {
-    EDITOR = "nvim";
+    EDITOR = "hx";
   };
 
   # Let Home Manager install and manage itself.
