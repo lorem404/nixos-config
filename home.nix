@@ -52,6 +52,11 @@
     bear
     clang-tools
     lldb
+    bacon
+    pkg-config
+    cargo-watch
+    cargo-outdated
+    cargo-edit
     brightnessctl
     pulseaudio
     podman-tui # Terminal UI for Podman
@@ -82,7 +87,7 @@
   home.file = { };
 
   home.sessionVariables = {
-    EDITOR = "hx";
+    EDITOR = "nvim";
   };
 
   # Let Home Manager install and manage itself.

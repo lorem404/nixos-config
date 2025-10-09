@@ -33,6 +33,7 @@
 
   environment.sessionVariables = {
     MANPAGER = "nvim +Man!";
+    RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
   };
 
   # Add to /etc/nixos/configuration.nix

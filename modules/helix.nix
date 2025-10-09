@@ -9,8 +9,6 @@
     # Rust toolchain
     cargo
     rustc
-    rust-analyzer
-    
     # Rust utilities
     rustfmt
     clippy
@@ -29,7 +27,6 @@
     enable = true;
     
     # Default language (optional)
-    defaultEditor = true;
 
     settings = {
       theme = "catppuccin_mocha";
