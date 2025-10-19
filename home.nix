@@ -21,6 +21,7 @@
   home.sessionVariables = {
     # Force rootless mode through environment
     PODMAN_USERNS = "auto";
+    RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
   };
 
   programs.bash.shellAliases = {
