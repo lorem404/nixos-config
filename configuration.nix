@@ -41,6 +41,10 @@
     options btusb reset=1
   '';
 
+  services.tor = {
+    enable = true;
+    client.enable = true;
+  };
   # Or try
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -122,6 +126,11 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  
+  services.espanso = {
+    enable = true;
+    # package = pkgs.espanso-wayland;  # Use this if you need Wayland support
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tehran";
@@ -244,6 +253,7 @@
     dive # Explore container images
     trivy # Security scanner
     ctop
+    proxychains-ng
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
