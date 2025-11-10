@@ -127,10 +127,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
   
-  services.espanso = {
-    enable = true;
-    # package = pkgs.espanso-wayland;  # Use this if you need Wayland support
-  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tehran";
