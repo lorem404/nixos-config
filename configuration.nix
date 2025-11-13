@@ -244,6 +244,8 @@
     buildah # Build images with Podman
     skopeo # Work with container registries
     tor
+    reg
+    docker-slim
     iptables
     # Utilities
     dive # Explore container images
