@@ -49,8 +49,6 @@
       # Master
       master = { new_status = "master"; };
 
-      # Gestures
-      gestures = { workspace_swipe = "off"; };
 
       # Device
       device = {
