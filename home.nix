@@ -41,6 +41,7 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    redis
     postgresql_18
     tree-sitter
     pamixer
