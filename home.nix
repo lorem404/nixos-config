@@ -34,13 +34,15 @@
     pbuild = "buildah bud";
     ppush = "skopeo copy";
   };
- 
+
+  
 
   # Required packages for the default config to work
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    sqls
     tree-sitter
     pamixer
     cmake
