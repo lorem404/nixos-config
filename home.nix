@@ -43,6 +43,7 @@
   # environment.
   home.packages = with pkgs; [
     sqls
+    sql-formatter
     tree-sitter
     pamixer
     cmake
