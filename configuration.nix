@@ -27,7 +27,7 @@
   boot.loader.grub.useOSProber = true;
 
   services.gnome.at-spi2-core.enable = lib.mkForce false;
-  services.gnome.core-apps.enable = lib.mkForce false;
+  services.gnome.core-apps.enable = lib.mkForce true;
 
   programs.fish.enable = true;
   programs.git.enable = true;
