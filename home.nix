@@ -11,6 +11,7 @@
     ./modules/kitty.nix
     ./modules/nushell.nix
     ./modules/helix.nix
+    ./modules/vscode.nix
   ];
 
   home.username = "lorem";
@@ -24,6 +25,7 @@
     RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
   };
 
+  nixpkgs.config.allowUnfree = true;
   programs.bash.shellAliases = {
     # Clear distinction between docker and podman
     dps = "docker ps";
