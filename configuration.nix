@@ -95,6 +95,7 @@
 
   # ===== HYPRLAND CONFIGURATION =====
   programs.hyprland.enable = true;
+  programs.hyprland.xwayland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
 
   # ===== DISPLAY MANAGER FIX =====
@@ -103,6 +104,8 @@
     enable = true;
     wayland.enable = true;
   };
+
+  services.displayManager.gdm.enable = false;
 
   # Enable GNOME desktop manager
   services.desktopManager.gnome.enable = true;
