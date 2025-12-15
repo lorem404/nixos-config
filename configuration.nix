@@ -17,6 +17,8 @@
     inputs.home-manager.nixosModules.default
   ];
   
+  systemd.targets.network-online.enable = lib.mkForce false;
+
   boot.supportedFilesystems = [ "ntfs" ];
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
@@ -95,14 +97,14 @@
 
   # ===== HYPRLAND CONFIGURATION =====
   programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
+  # programs.hyprland.xwayland.enable = true;
   programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
 
   # ===== DISPLAY MANAGER FIX =====
   # Use SDDM as display manager
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;
+    wayland.enable = false;
   };
 
   services.displayManager.gdm.enable = false;
