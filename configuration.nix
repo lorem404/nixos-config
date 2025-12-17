@@ -14,10 +14,11 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./modules/nvf.nix
     inputs.home-manager.nixosModules.default
   ];
   
-  systemd.targets.network-online.enable = lib.mkForce false;
+  # systemd.targets.network-online.enable = lib.mkForce false;
 
   boot.supportedFilesystems = [ "ntfs" ];
   # Bootloader.
@@ -98,13 +99,13 @@
   # ===== HYPRLAND CONFIGURATION =====
   programs.hyprland.enable = true;
   # programs.hyprland.xwayland.enable = true;
-  programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+  # programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
 
   # ===== DISPLAY MANAGER FIX =====
   # Use SDDM as display manager
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = false;
+    wayland.enable = true;
   };
 
   services.displayManager.gdm.enable = false;

@@ -2,8 +2,8 @@
   description = "Nixos config flake";
 
   inputs = {
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nvf.url = "github:notashelf/nvf";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -11,7 +11,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
+  outputs = { self, nixpkgs, nvf, ... }@inputs: {
     # use "nixos", or your hostname as the name of the configuration
     # it's a better practice than "default" shown in the video
     nixosConfigurations.vivobook = nixpkgs.lib.nixosSystem {
@@ -19,7 +19,7 @@
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
-
+        nvf.nixosModules.default 
         inputs.home-manager.nixosModules.default
       ];
     };
