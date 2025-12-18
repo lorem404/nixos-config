@@ -15,23 +15,25 @@
 
         theme = {
           enable = true;
-          name = "catppuccin";
-          style = "mocha";
+          name = "tokyonight";
+          style = "night";
         };
         lsp = {
           enable = true;
           formatOnSave = true;
+          lspkind.enable = true;
         };
         statusline.lualine.enable = true;
         telescope.enable = true;
         autocomplete.nvim-cmp = {
           enable = true;
-          setupOpts.mapping = {
-            "<Down>" = "cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select })";
-            "<Up>" = "cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select })";
-          };
           sources = {
             luasnip = "[Snippet]";
+          };
+          mappings = {
+            next = "<Down>";
+            previous = "<Up>";
+            confirm = "<CR>"; # Or "<Tab>" if you prefer
           };
         };
         languages = {
@@ -70,6 +72,31 @@
             };
           };
         };
+        tabline.nvimBufferline = {
+          enable = true;
+          setupOpts = {
+            options = {
+              # Use icons from your Nerd Font
+              offsets = [
+                {
+                  filetype = "neo-tree";
+                  text = "File Explorer";
+                  text_align = "left";
+                  separator = true;
+                }
+              ];
+              # Makes it look like modern tabs
+              separator_style = "thin"; # Options: "slant", "dot", "thick", "thin"
+              show_buffer_close_icons = true;
+              show_close_icon = false;
+            };
+          };
+        };
+        diagnostics.config = {
+          underline = true;
+          virtual_lines = true;
+          virtual_text = true;
+        };
         keymaps = [
           {
             key = "<leader>e";
@@ -89,6 +116,37 @@
             mode = "n";
             action = ":Telescope live_grep<CR>";
             desc = "Live Grep (Search Text)";
+          }
+          {
+            key = "]b"; # Shift + l
+            mode = "n";
+            action = ":BufferLineCycleNext<CR>";
+            desc = "Next Tab";
+          }
+          {
+            key = "[b"; # Shift + h
+            mode = "n";
+            action = ":BufferLineCyclePrev<CR>";
+            desc = "Previous Tab";
+          }
+          {
+            key = "<leader>x";
+            mode = "n";
+            action = ":bdelete<CR>";
+            desc = "Close current file";
+          }
+          {
+            key = "[B"; # Alt + h
+            mode = "n";
+            action = ":BufferLineMovePrev<CR>";
+            desc = "Shift Buffer Left";
+          }
+          # Move the current buffer/tab to the RIGHT
+          {
+            key = "]B"; # Alt + l
+            mode = "n";
+            action = ":BufferLineMoveNext<CR>";
+            desc = "Shift Buffer Right";
           }
         ];
       };
