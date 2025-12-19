@@ -22,6 +22,7 @@
           enable = true;
           formatOnSave = true;
           lspkind.enable = true;
+          inlayHints.enable = true;
         };
         statusline.lualine.enable = true;
         telescope.enable = true;
@@ -42,6 +43,7 @@
           rust = {
             enable = true;
             crates.enable = true; # Adds cargo crate support (like LazyVim)
+            lsp.enable = true;
           };
 
           zig.enable = true;
@@ -92,10 +94,18 @@
             };
           };
         };
-        diagnostics.config = {
-          underline = true;
-          virtual_lines = true;
-          virtual_text = true;
+        diagnostics = {
+          enable = true;
+          # We put the detailed settings inside 'config'
+          config = {
+            underline = true;
+            severity_sort = true; # Now this will work!
+            virtual_lines = false; # Turn this off to stop code from jumping
+            virtual_text = {
+              spacing = 4;
+              prefix = "●";
+            };
+          };
         };
         keymaps = [
           {
@@ -147,6 +157,32 @@
             mode = "n";
             action = ":BufferLineMoveNext<CR>";
             desc = "Shift Buffer Right";
+          }
+          {
+            key = "<leader>|";
+            mode = "n";
+            action = ":vsplit<CR>";
+            desc = "Split Window Vertically";
+          }
+          {
+            key = "<C-h>"; # Ctrl + h (Left)
+            mode = "n";
+            action = "<C-w>h";
+          }
+          {
+            key = "<C-j>"; # Ctrl + j (Down)
+            mode = "n";
+            action = "<C-w>j";
+          }
+          {
+            key = "<C-k>"; # Ctrl + k (Up)
+            mode = "n";
+            action = "<C-w>k";
+          }
+          {
+            key = "<C-l>"; # Ctrl + l (Right)
+            mode = "n";
+            action = "<C-w>l";
           }
         ];
       };
