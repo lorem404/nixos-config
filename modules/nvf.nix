@@ -6,6 +6,21 @@
     # most settings are documented in the appendix
     settings = {
       vim = {
+        visuals = {
+          indent-blankline = {
+            enable = true;
+            setupOpts = {
+              indent = {
+                char = "│"; # The vertical line
+              };
+              scope = {
+                enabled = true;
+                show_start = true;
+                show_end = true;
+              };
+            };
+          };
+        };
         vimAlias = true;
         options = {
           clipboard = "unnamedplus";
