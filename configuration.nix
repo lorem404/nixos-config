@@ -1,35 +1,33 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
-
 {
   config,
   pkgs,
   inputs,
   lib,
   ...
-}:
-
-{
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/nvf.nix
     inputs.home-manager.nixosModules.default
   ];
-  
+
   # systemd.targets.network-online.enable = lib.mkForce false;
 
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = ["ntfs"];
   # Bootloader.
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
-  boot.loader.grub.devices = [ "nodev" ];
+  boot.loader.grub.devices = ["nodev"];
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
 
-  services.gnome.at-spi2-core.enable = lib.mkForce false;
+  services.gnome.at-spi2-core.enable = lib.mkForce true;
   services.gnome.core-apps.enable = lib.mkForce true;
+  services.dbus.enable = true;
 
   programs.fish.enable = true;
   programs.git.enable = true;
@@ -53,7 +51,7 @@
     enable = true;
     client.enable = true;
   };
-  
+
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
@@ -67,7 +65,7 @@
       };
       enableOnBoot = true;
       daemon.settings = {
-        "hosts" = [ "unix:///var/run/docker.sock" ];
+        "hosts" = ["unix:///var/run/docker.sock"];
         "iptables" = true;
       };
     };
@@ -127,7 +125,7 @@
 
   home-manager = {
     # also pass inputs to home-manager modules
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users = {
       "lorem" = import ./home.nix;
     };
@@ -147,8 +145,8 @@
   ];
 
   fonts.fontconfig.defaultFonts = {
-    monospace = [ "FiraCode Nerd Font Mono" ];
-    sansSerif = [ "Font Awesome 6 Free" ];
+    monospace = ["FiraCode Nerd Font Mono"];
+    sansSerif = ["Font Awesome 6 Free"];
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -160,7 +158,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  
 
   # Set your time zone.
   time.timeZone = "Asia/Tehran";
@@ -225,6 +222,9 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    rustc
+    cargo
+    rust-analyzer
     evince
     glib
     gh

@@ -30,6 +30,10 @@
           enable = true;
           sources = {
             luasnip = "[Snippet]";
+            nvim_lsp = "[LSP]";
+            buffer = "[Buffer]";
+            path = "[Path]";
+            crates = "[Crates]";
           };
           mappings = {
             next = "<Down>";
@@ -38,6 +42,7 @@
           };
         };
         languages = {
+          enableLSP = true;
           enableTreesitter = true;
           enableFormat = true;
           rust = {
