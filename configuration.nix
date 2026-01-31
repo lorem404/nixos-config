@@ -12,6 +12,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/nvf.nix
+    ./modules/tor.nix
     inputs.home-manager.nixosModules.default
   ];
 
@@ -46,11 +47,6 @@
   boot.extraModprobeConfig = ''
     options btusb reset=1
   '';
-
-  services.tor = {
-    enable = true;
-    client.enable = true;
-  };
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
