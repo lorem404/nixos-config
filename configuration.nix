@@ -34,6 +34,10 @@
   programs.tmux.enable = true;
   programs.starship.enable = true;
   programs.waybar.enable = true;
+  programs.throne = {
+    enable = true;
+    tunMode.enable = true;
+  };
 
   environment.sessionVariables = {
     MANPAGER = "nvim +Man!";
@@ -215,13 +219,11 @@
   # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    tor-browser
     rustc
     cargo
     rust-analyzer
@@ -285,6 +287,8 @@
     proxychains-ng
   ];
 
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
