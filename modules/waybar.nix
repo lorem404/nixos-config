@@ -1,5 +1,4 @@
-{ pkgs, ... }: {
-
+{pkgs, ...}: {
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -99,25 +98,24 @@
         margin-right = 0;
 
         # GNOME-style layout (centered window title, right-side indicators)
-        modules-left = [ "hyprland/workspaces" ];
-        modules-center = [ "window" ];
-        modules-right =
-          [ "pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray" ];
+        modules-left = ["hyprland/workspaces"];
+        modules-center = ["window"];
+        modules-right = ["pulseaudio" "network" "cpu" "memory" "battery" "clock" "tray"];
 
         # Workspaces like GNOME activities
         "hyprland/workspaces" = {
           format = "{icon}";
           format-icons = {
-            "1" = ""; # Desktop
-            "2" = ""; # Browser (Chrome/Firefox)
-            "3" = ""; # Code (VS Code/Neovim)
-            "4" = ""; # Chat (Discord/Slack)
-            "5" = ""; # Music (Spotify)
-            "6" = ""; # Video (MPV)
-            "7" = ""; # Email
-            "8" = ""; # Settings
-            "9" = ""; # Games
-            "10" = ""; # Terminal
+            "1" = "1"; # Desktop
+            "2" = "2"; # Browser (Chrome/Firefox)
+            "3" = "3"; # Code (VS Code/Neovim)
+            "4" = "4"; # Chat (Discord/Slack)
+            "5" = "5"; # Music (Spotify)
+            "6" = "6"; # Video (MPV)
+            "7" = "7"; # Email
+            "8" = "8"; # Settings
+            "9" = "9"; # Games
+            "10" = "10"; # Terminal
             urgent = ""; # Urgent workspace (alert)
             default = ""; # Default icon
           };
@@ -126,7 +124,8 @@
           active-only = false; # Show only active workspaces
           all-outputs = true; # Show workspaces from all monitors
           disable-scroll = false; # Enable scroll to change workspaces
-          persistent_workspaces = { # Persistent workspaces per monitor
+          persistent_workspaces = {
+            # Persistent workspaces per monitor
             "*" = 5; # 5 workspaces on all monitors
           };
 
@@ -162,7 +161,7 @@
             phone = "";
             portable = "";
             car = "";
-            default = [ "" "" "" ];
+            default = ["" "" ""];
           };
           on-click = "pavucontrol";
         };
@@ -199,7 +198,7 @@
           format-charging = "{capacity}% 󰂄";
           format-plugged = "{capacity}% 󰚥";
           format-alt = "{time} {icon}";
-          format-icons = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
+          format-icons = ["󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
         };
 
         # System tray (GNOME style)
@@ -210,5 +209,4 @@
       };
     };
   };
-
 }
