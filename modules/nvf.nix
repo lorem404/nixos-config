@@ -66,7 +66,7 @@
             lsp.enable = true;
           };
 
-          zig.enable = true;
+          zig.enable = false;
 
           clang = {
             enable = true; # For C and C++
