@@ -29,6 +29,7 @@
   services.gnome.at-spi2-core.enable = lib.mkForce true;
   services.gnome.core-apps.enable = lib.mkForce true;
   services.dbus.enable = true;
+  services.flatpak.enable = true;
 
   programs.fish.enable = true;
   programs.git.enable = true;
