@@ -6,6 +6,14 @@
     # most settings are documented in the appendix
     settings = {
       vim = {
+        git = {
+          enable = true;
+          gitsigns = {
+            enable = true;
+            # Optional: Shows who changed the line in gray text at the end of the line
+            codeActions.enable = true;
+          };
+        };
         visuals = {
           indent-blankline = {
             enable = true;
@@ -203,6 +211,13 @@
             key = "<C-l>"; # Ctrl + l (Right)
             mode = "n";
             action = "<C-w>l";
+          }
+          {
+            key = "<esc>";
+            mode = "n";
+            action = ":nohlsearch<CR>";
+            silent = true;
+            desc = "Clear search highlights with Escape";
           }
         ];
       };
