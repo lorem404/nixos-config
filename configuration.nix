@@ -29,6 +29,7 @@
   services.gnome.at-spi2-core.enable = lib.mkForce true;
   services.gnome.core-apps.enable = lib.mkForce true;
   services.dbus.enable = true;
+  services.dbus.implementation = lib.mkForce "dbus";
   services.flatpak.enable = true;
 
   programs.fish.enable = true;
@@ -108,11 +109,11 @@
   # ===== DISPLAY MANAGER FIX =====
   # Use SDDM as display manager
   services.displayManager.sddm = {
-    enable = true;
+    enable = false;
     wayland.enable = true;
   };
 
-  services.displayManager.gdm.enable = false;
+  services.displayManager.gdm.enable = true;
 
   # Enable GNOME desktop manager
   services.desktopManager.gnome.enable = true;

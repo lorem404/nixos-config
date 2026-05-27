@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
@@ -38,17 +38,16 @@
       # };
 
       # Animations
-      animations = { enabled = false; };
+      animations = {enabled = false;};
 
       # Dwindle
       dwindle = {
-        pseudotile = "yes";
+        # pseudotile = "yes";
         preserve_split = "yes";
       };
 
       # Master
-      master = { new_status = "master"; };
-
+      master = {new_status = "master";};
 
       # Device
       device = {
@@ -99,7 +98,7 @@
         "$mod, V, togglefloating"
         "$mod, R, exec, wofi --show drun"
         "$mod, P, pseudo"
-        "$mod, J, togglesplit"
+        # "$mod, J, togglesplit"
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
@@ -129,7 +128,7 @@
         ''$mod, S, exec, grim -g "$(slurp)" - | wl-copy''
       ];
 
-      bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
+      bindm = ["$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow"];
     };
 
     # Extra config (environment variables and misc)
@@ -160,5 +159,4 @@
       env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
     '';
   };
-
 }
