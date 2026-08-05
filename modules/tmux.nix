@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.tmux = {
     enable = true;
 
@@ -31,6 +31,7 @@
       set -g status-right "#{E:@catppuccin_status_application}"
       set -ag status-right "#{E:@catppuccin_status_session}"
       set -ag status-right "#{E:@catppuccin_status_uptime}"
+      set-option -g focus-events on
       run-shell ${pkgs.tmuxPlugins.catppuccin.rtp}
     '';
   };

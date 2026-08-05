@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   programs.nvf = {
     enable = true;
 
@@ -6,6 +6,27 @@
     # most settings are documented in the appendix
     settings = {
       vim = {
+        treesitter = {
+          enable = true;
+          # This forces treesitter to use the correct directory
+          # and satisfies the 'runtimepath' check
+          addDefaultGrammars = true;
+        };
+
+        luaConfigPost = ''
+          vim.g.clipboard = {
+            name = 'wl-clipboard',
+            copy = {
+              ['+'] = 'wl-copy --foreground --type text/plain',
+              ['*'] = 'wl-copy --foreground --primary --type text/plain',
+            },
+            paste = {
+              ['+'] = 'wl-paste --no-newline',
+              ['*'] = 'wl-paste --no-newline --primary',
+            },
+            cache_enabled = 1,
+          }
+        '';
         git = {
           enable = true;
           gitsigns = {
@@ -35,6 +56,7 @@
           shiftwidth = 2;
           tabstop = 2;
         };
+        # clipboard.register = "unnamedplus";
 
         theme = {
           enable = true;
@@ -65,12 +87,12 @@
           };
         };
         languages = {
-          enableLSP = true;
+          # enableLSP = true;
           enableTreesitter = true;
           enableFormat = true;
           rust = {
             enable = true;
-            crates.enable = true; # Adds cargo crate support (like LazyVim)
+            # crates.enable = true; # Adds cargo crate support (like LazyVim)
             lsp.enable = true;
           };
 
@@ -92,15 +114,18 @@
           nix.enable = true;
         };
         filetree.neo-tree.enable = true;
-        ui.noice = {
-          enable = true;
-          setupOpts = {
-            presets = {
-              bottom_search = true; # keeps search bar at the bottom
-              command_palette = true; # positions the command line at top-middle
-              long_message_to_split = true;
+        ui = {
+          noice = {
+            enable = true;
+            setupOpts = {
+              presets = {
+                bottom_search = true; # keeps search bar at the bottom
+                command_palette = true; # positions the command line at top-middle
+                long_message_to_split = true;
+              };
             };
           };
+          # notify.enable = true;
         };
         tabline.nvimBufferline = {
           enable = true;

@@ -33,10 +33,19 @@
   services.flatpak.enable = true;
 
   programs.fish.enable = true;
+  programs.bash = {
+    enable = true;
+    blesh.enable = true;
+  };
   programs.git.enable = true;
   programs.tmux.enable = true;
   programs.starship.enable = true;
   programs.waybar.enable = true;
+  programs.hyprland = {
+    enable = true;
+    #package = inputs.hyprland.packages.${pkgs.system}.default;
+    #package = inputs.hyprland.packages."${pkgs.system}".hyprland;
+  };
   programs.throne = {
     enable = true;
     tunMode.enable = true;
@@ -102,7 +111,6 @@
   ];
 
   # ===== HYPRLAND CONFIGURATION =====
-  programs.hyprland.enable = true;
   # programs.hyprland.xwayland.enable = true;
   # programs.hyprland.package = inputs.hyprland.packages."${pkgs.system}".hyprland;
 

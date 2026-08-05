@@ -44,6 +44,13 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    wl-clipboard
+    zoxide
+    starship
+    direnv
+    nix-index
+    ripgrep
+    tree
     sqls
     sql-formatter
     tree-sitter
