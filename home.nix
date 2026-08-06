@@ -103,6 +103,7 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    HYPRLAND_CONFIG = "$HOME/.config/hypr/hyprland.conf";
   };
 
   # Let Home Manager install and manage itself.

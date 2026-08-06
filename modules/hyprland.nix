@@ -8,160 +8,135 @@
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.default;
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     systemd.enable = true;
-    settings = {
-      # Monitor configuration
-      monitor = "eDP-1,preferred,auto,1";
 
-      # Exec-once
-      # exec-once = [ ];
+    # Hyprland 0.55+ dropped hyprlang in favor of a Lua config.
+    # `settings = {...}` (hyprlang serializer) is broken for this backend right now,
+    # so we write the whole config as raw Lua below instead.
+    configType = "lua";
 
-      # Input configuration
-      input = {
-        kb_layout = "us";
-        # kb_variant = "";
-        # kb_model = "";
-        # kb_options = "";
-        # kb_rules = "";
-        # follow_mouse = 1;
-        # sensitivity = 0;
-      };
-
-      # General
-      general = {
-        gaps_in = 0;
-        gaps_out = 0;
-        border_size = 2;
-        "col.active_border" = "rgba(ffffffff) rgba(ffffffff) 45deg";
-        "col.inactive_border" = "rgba(595959aa)";
-        layout = "dwindle";
-      };
-
-      # decoration = {
-      #   rounding = 0;
-      # blur = { enabled = false; };
-      # drop_shadow = false;
-      # };
-
-      # Animations
-      animations = {enabled = false;};
-
-      # Dwindle
-      dwindle = {
-        # pseudotile = "yes";
-        preserve_split = "yes";
-      };
-
-      # Master
-      master = {new_status = "master";};
-
-      # Device
-      device = {
-        name = "epic-mouse-v1";
-        sensitivity = "-0.5";
-      };
-
-      # Window rules
-      # windowrule = [
-      #   "float, ^(kitty)$"
-      #   "float,^(pavucontrol)$"
-      #   "float,title:^(Open File)(.*)$"
-      #   "float,title:^(Branch dialog)(.*)$"
-      #   "float,title:^(Confirm to replace files)(.*)$"
-      #   "float,title:^(File Operation Progress)(.*)$"
-      #   "float,title:^(Opening)(.*)$"
-      #   "float,title:^(Progress)(.*)$"
-      #   "float,title:^(Replace)(.*)$"
-      #   "float,title:^(mpv)$"
-      # ];
-      # # Window rule v2
-      # windowrulev2 = "suppressevent maximize, class:.*";
-
-      # Key bindings (exactly as in default config)
-      "$mod" = "SUPER";
-
-      bind = [
-        # 🎛️ Advanced Controls (with notifications)
-        "$mod, F3, exec, pamixer -i 10"
-        "$mod, F2, exec, pamixer -d 10"
-        "$mod, F5, exec, brightnessctl set +10%"
-        "$mod, F4, exec, brightnessctl set 10%-"
-
-        # Power actions
-        "$mod SHIFT ,P, exec, systemctl poweroff"
-        "$mod SHIFT ,R, exec, systemctl reboot"
-        "$mod SHIFT ,S, exec, systemctl suspend"
-
-        # Battery saver mode
-        "$mod SHIFT ,B, exec, powerprofilesctl set power-saver"
-        "$mod SHIFT, N, exec, powerprofilesctl set balanced"
-        "$mod SHIFT ,M, exec, powerprofilesctl set performance"
-        "$mod ,B, exec, firefox"
-        "$mod, Q, exec, kitty"
-        "$mod, C, killactive"
-        "$mod, M, exit"
-        "$mod, E, exec, dolphin"
-        "$mod, V, togglefloating"
-        "$mod, R, exec, wofi --show drun"
-        "$mod, P, pseudo"
-        # "$mod, J, togglesplit"
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod, 0, workspace, 10"
-        "$mod SHIFT, 1, movetoworkspace, 1"
-        "$mod SHIFT, 2, movetoworkspace, 2"
-        "$mod SHIFT, 3, movetoworkspace, 3"
-        "$mod SHIFT, 4, movetoworkspace, 4"
-        "$mod SHIFT, 5, movetoworkspace, 5"
-        "$mod SHIFT, 6, movetoworkspace, 6"
-        "$mod SHIFT, 7, movetoworkspace, 7"
-        "$mod SHIFT, 8, movetoworkspace, 8"
-        "$mod SHIFT, 9, movetoworkspace, 9"
-        "$mod SHIFT, 0, movetoworkspace, 10"
-        "$mod, mouse_down, workspace, e+1"
-        "$mod, mouse_up, workspace, e-1"
-        ''$mod, S, exec, grim -g "$(slurp)" - | wl-copy''
-      ];
-
-      bindm = ["$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow"];
-    };
-
-    # Extra config (environment variables and misc)
+    # Inlined as .text (not .source) so there's no external file path or
+    # git-tracking requirement to worry about.
     extraConfig = ''
-      # Environment variables
-      env = XCURSOR_SIZE,24
+      -- Ported from hyprlang config
+      -- Verify dispatchers/env calls against: https://wiki.hypr.land/Configuring/Basics/Dispatchers/
 
-      # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
-      input {
-          kb_layout = us
-          kb_variant =
-          kb_model =
-          kb_options =
-          kb_rules =
+      ------------------------------------------------------
+      -- VARS
+      ------------------------------------------------------
+      local mainMod = "SUPER"
 
-          follow_mouse = 1
+      ------------------------------------------------------
+      -- MONITOR
+      ------------------------------------------------------
+      hl.monitor({
+        output   = "eDP-1",
+        mode     = "preferred",
+        position = "auto",
+        scale    = 1,
+      })
 
-          touchpad {
-              natural_scroll = no
-          }
+      ------------------------------------------------------
+      -- GENERAL / INPUT / DWINDLE / MASTER / ANIMATIONS
+      ------------------------------------------------------
+      hl.config({
+        general = {
+          gaps_in     = 0,
+          gaps_out    = 0,
+          border_size = 2,
+          ["col.active_border"] = "rgba(ffffffff)",
+          ["col.inactive_border"] = "rgba(595959aa)",
+          layout = "dwindle",
+        },
 
-          sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-      }
+        input = {
+          kb_layout    = "us",
+          follow_mouse = 1,
+          sensitivity  = 0,
+          touchpad = {
+            natural_scroll = false,
+          },
+        },
 
-      # Some default env vars.
-      env = XCURSOR_SIZE,24
-      env = QT_QPA_PLATFORM,wayland;xcb
-      env = QT_WAYLAND_DISABLE_WINDOWDECORATION,1
+        animations = {
+          enabled = false,
+        },
+
+        dwindle = {
+          preserve_split = true,
+        },
+
+        master = {
+          new_status = "master",
+        },
+      })
+
+      ------------------------------------------------------
+      -- ENVIRONMENT VARIABLES
+      -- NOTE: hl.env(...) is my best-guess mapping (from a third-party
+      -- hyprlang->lua converter), not confirmed against the official wiki.
+      -- If `hyprctl reload` errors on these lines, check the Variables page:
+      -- https://wiki.hypr.land/Configuring/Basics/Variables/
+      ------------------------------------------------------
+      hl.env("XCURSOR_SIZE", "24")
+      hl.env("QT_QPA_PLATFORM", "wayland;xcb")
+      hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
+
+      ------------------------------------------------------
+      -- KEYBINDS
+      ------------------------------------------------------
+
+      -- Volume / brightness / power
+      hl.bind(mainMod .. " + F3", hl.dsp.exec_cmd("pamixer -i 10"))
+      hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd("pamixer -d 10"))
+      hl.bind(mainMod .. " + F5", hl.dsp.exec_cmd("brightnessctl set +10%"))
+      hl.bind(mainMod .. " + F4", hl.dsp.exec_cmd("brightnessctl set 10%-"))
+
+      hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("systemctl poweroff"))
+      hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("systemctl reboot"))
+      hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("systemctl suspend"))
+      hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("powerprofilesctl set power-saver"))
+      hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("powerprofilesctl set balanced"))
+      hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("powerprofilesctl set performance"))
+
+      -- Apps
+      hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("firefox"))
+      hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd("kitty"))
+      hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("dolphin"))
+      hl.bind(mainMod .. " + R", hl.dsp.exec_cmd("wofi --show drun"))
+      hl.bind(mainMod .. " + S", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+
+      -- Window management
+      hl.bind(mainMod .. " + C", hl.dsp.window.close())
+      hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
+      hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
+
+      -- Exit Hyprland
+      -- (if you use uwsm, swap for hl.dsp.exec_cmd("uwsm stop") instead —
+      -- see https://wiki.hypr.land/Configuring/Basics/Dispatchers/)
+      hl.bind(mainMod .. " + M", hl.dsp.exit())
+
+      -- Focus movement
+      -- NOTE: exact dispatcher shape for directional focus not fully confirmed —
+      -- verify with `hyprctl dispatch 'hl.dsp.???'` if this errors on reload.
+      hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "l" }))
+      hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "r" }))
+      hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "u" }))
+      hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "d" }))
+
+      -- Workspaces 1-10 (SUPER+0 = workspace 10), SHIFT+num moves window
+      for i = 1, 10 do
+        local key = (i == 10) and "0" or tostring(i)
+        hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
+        hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+      end
+
+      -- Scroll wheel workspace switching
+      hl.bind(mainMod .. " + mouse_down", hl.dsp.exec_raw("workspace e+1"))
+      hl.bind(mainMod .. " + mouse_up",   hl.dsp.exec_raw("workspace e-1"))
+
+      -- Mouse-driven move/resize
+      hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
+      hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
     '';
   };
 }
