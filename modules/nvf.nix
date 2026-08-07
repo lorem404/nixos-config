@@ -8,27 +8,29 @@
       vim = {
         treesitter = {
           enable = true;
-          # This forces treesitter to use the correct directory
+          # this forces treesitter to use the correct directory
           # and satisfies the 'runtimepath' check
           addDefaultGrammars = true;
         };
-
         luaConfigPost = ''
+          vim.opt.clipboard = "unnamedplus"
+
           vim.g.clipboard = {
-            name = 'wl-clipboard',
+            name = 'wl-clipboard (wayland-1)',
             copy = {
-              ['+'] = 'wl-copy --foreground --type text/plain',
-              ['*'] = 'wl-copy --foreground --primary --type text/plain',
+              ['+'] = 'wl-copy',
+              ['*'] = 'wl-copy',
             },
             paste = {
-              ['+'] = 'wl-paste --no-newline',
-              ['*'] = 'wl-paste --no-newline --primary',
+              ['+'] = 'wl-paste',
+              ['*'] = 'wl-paste',
             },
-            cache_enabled = 1,
+            cache_enabled = 0,
           }
         '';
+
         git = {
-          enable = true;
+          # Enable the X11 windowing system.le = true;
           gitsigns = {
             enable = true;
             # Optional: Shows who changed the line in gray text at the end of the line
@@ -52,7 +54,6 @@
         };
         vimAlias = true;
         options = {
-          clipboard = "unnamedplus";
           shiftwidth = 2;
           tabstop = 2;
         };
@@ -131,6 +132,7 @@
           enable = true;
           setupOpts = {
             options = {
+              clipboard = "unnamedplus";
               # Use icons from your Nerd Font
               offsets = [
                 {

@@ -104,6 +104,8 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     HYPRLAND_CONFIG = "$HOME/.config/hypr/hyprland.conf";
+    WAYLAND_DISPLAY = "wayland-1";
+    XDG_RUNTIME_DIR = "/run/user/1000";
   };
 
   # Let Home Manager install and manage itself.

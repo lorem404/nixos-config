@@ -56,6 +56,8 @@
     RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
     EDITOR = "nvim";
     VISUAL = "nvim";
+    XDG_RUNTIME_DIR = "/run/user/1000";
+    WAYLAND_DISPLAY = "wayland-1";
   };
 
   # Add to /etc/nixos/configuration.nix
@@ -296,6 +298,7 @@
     trivy # Security scanner
     ctop
     proxychains-ng
+    wl-clipboard
   ];
 
   # Allow unfree packages
