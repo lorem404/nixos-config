@@ -13,6 +13,7 @@
     ./hardware-configuration.nix
     ./modules/nvf.nix
     ./modules/proxychain.nix
+    ./modules/bash.nix
     inputs.home-manager.nixosModules.default
   ];
 
@@ -33,10 +34,6 @@
   services.flatpak.enable = true;
 
   programs.fish.enable = true;
-  programs.bash = {
-    enable = true;
-    blesh.enable = true;
-  };
   programs.git.enable = true;
   programs.tmux.enable = true;
   programs.starship.enable = true;
@@ -216,7 +213,7 @@
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.lorem = {
     isNormalUser = true;
-    shell = pkgs.fish;
+    shell = pkgs.bash;
     description = "lorem";
     extraGroups = [
       "networkmanager"

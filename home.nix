@@ -11,9 +11,7 @@
     ./modules/waybar.nix
     ./modules/tmux.nix
     ./modules/kitty.nix
-    ./modules/nushell.nix
-    ./modules/helix.nix
-    ./modules/vscode.nix
+    # ./modules/vscode.nix
   ];
 
   home.username = "lorem";
