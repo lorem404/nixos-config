@@ -4,6 +4,7 @@
 {
   config,
   pkgs,
+  pkgs-stable,
   inputs,
   lib,
   ...
@@ -33,6 +34,7 @@
   services.dbus.implementation = lib.mkForce "dbus";
   services.flatpak.enable = true;
 
+  programs.virt-manager.enable = true;
   programs.fish.enable = true;
   programs.git.enable = true;
   programs.tmux.enable = true;
@@ -71,6 +73,15 @@
   hardware.bluetooth.powerOnBoot = true;
 
   virtualisation = {
+    #qemu/kvm setup
+    libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs-stable.qemu_full;
+        runAsRoot = true;
+        swtpm.enable = true; # Good if you ever want to test virtual TPMs too
+      };
+    };
     # DOCKER - for existing tools and compatibility
     docker = {
       enable = true;
@@ -220,6 +231,7 @@
       "wheel"
       "docker"
       "podman"
+      "libvirtd"
     ];
     packages = with pkgs; [
       #  thunderbird
